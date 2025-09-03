@@ -227,7 +227,7 @@ async def get_earnings_calendar_data(
 
 
 async def get_market_movers_data(
-    category: Literal["gainers", "losers", "most-active"] = "most-active",
+    category: Literal["52-week-gainers", "52-week-losers", "gainers", "losers", "most-active"] = "most-active",
     count: int = 25,
     market_session: Literal["regular", "pre-market", "after-hours"] = "regular"
 ) -> dict:
@@ -250,9 +250,12 @@ async def get_market_movers_data(
         # Gainers and losers only available for regular session
         url_map = {
             "gainers": f"https://finance.yahoo.com/gainers?count={count}&offset=0",
-            "losers": f"https://finance.yahoo.com/losers?count={count}&offset=0"
+            "losers": f"https://finance.yahoo.com/losers?count={count}&offset=0",
+            "52-week-gainers": f"https://finance.yahoo.com/markets/stocks/52-week-gainers/",
+            "52-week-losers": f"https://finance.yahoo.com/markets/stocks/52-week-losers/",
         }
         url = url_map.get(category)
+        logger.info(f"url: {url}, catagory: {category}")
         if not url:
             raise ValueError(f"Invalid category: {category}")
 
