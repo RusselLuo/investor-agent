@@ -251,8 +251,8 @@ async def get_market_movers_data(
         url_map = {
             "gainers": f"https://finance.yahoo.com/gainers?count={count}&offset=0",
             "losers": f"https://finance.yahoo.com/losers?count={count}&offset=0",
-            "52-week-gainers": f"https://finance.yahoo.com/markets/stocks/52-week-gainers/",
-            "52-week-losers": f"https://finance.yahoo.com/markets/stocks/52-week-losers/",
+            "52-week-gainers": f"https://finance.yahoo.com/markets/stocks/52-week-gainers?count={count}&offset=0",
+            "52-week-losers": f"https://finance.yahoo.com/markets/stocks/52-week-losers?count={count}&offset=0",
         }
         url = url_map.get(category)
         logger.info(f"url: {url}, catagory: {category}")
