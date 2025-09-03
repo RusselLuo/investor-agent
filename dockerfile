@@ -1,7 +1,7 @@
-FROM python:3.12-slim-trixie
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+FROM ghcr.io/astral-sh/uv:python3.12-trixie-slim
 
 RUN apt-get update && apt-get install -y \
+    bash \
     git \
     && rm -rf /var/lib/apt/lists/*
 
@@ -23,4 +23,4 @@ RUN playwright install chromium
 EXPOSE 8080
 
 # 启动命令
-CMD ["sh"]
+CMD ["uvx", "investor-agent[ta,playwright]"]
