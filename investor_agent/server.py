@@ -30,7 +30,6 @@ logging.basicConfig(
 
 mcp = FastMCP("Investor-Agent", dependencies=["yfinance", "httpx", "pandas", "pytrends", "beautifulsoup4"])
 
-
 FearGreedIndicator = Literal[
     "fear_and_greed",
     "fear_and_greed_historical",

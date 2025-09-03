@@ -20,7 +20,7 @@ RUN playwright install-deps chromium
 RUN playwright install chromium
 
 # 暴露端口
-EXPOSE 8080
+EXPOSE 80
 
 # 启动命令
-CMD ["uvx", "investor-agent[ta,playwright]"]
+CMD uvx mcpo --port 80 -- uv run investor-agent --local-timezone=America/Hong_Kong
