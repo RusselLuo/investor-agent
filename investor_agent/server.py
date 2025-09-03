@@ -42,7 +42,7 @@ FearGreedIndicator = Literal[
 
 @mcp.tool()
 async def get_market_movers(
-    category: Literal["gainers", "losers", "most-active"] = "most-active",
+    category: Literal["gainers", "losers", "most-active", "52-week-gainers", "52-week-losers"] = "most-active",
     count: int = 25,
     market_session: Literal["regular", "pre-market", "after-hours"] = "regular"
 ) -> dict:
