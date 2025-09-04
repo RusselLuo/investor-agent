@@ -49,15 +49,26 @@ def retry_on_rate_limit(max_retries: int = 3, base_delay: float = 5.0, success_d
     return decorator
 
 @retry_on_rate_limit(max_retries=3, base_delay=5.0, success_delay=1.5)
-def get_tickers_info(ticker: str | list[str]) -> dict | None:
-    if isinstance(ticker, str):
-        return yf.Ticker(ticker).get_info()
-    elif isinstance(ticker, list):
-        ret = {}
-        for t in ticker:
-            info = yf.Ticker(t).get_info()
-            ret[t] = info
-        return ret
+def get_tickers_info(tickers: list[str]) -> dict | None:
+    ret = {}
+    for t in tickers:
+        info = yf.Ticker(t).get_info()
+        ret[t] = info
+    return ret
+
+@retry_on_rate_limit(max_retries=3, base_delay=5.0, success_delay=1.5)
+def get_same_sector_tickers(ticker: str) -> dict | None:
+    sector: str = yf.Ticker(ticker).get_info()["sector"]
+    region : str = yf.Ticker(ticker).get_info()["region"]
+    query = yf.EquityQuery(
+        "and",
+        [
+            yf.EquityQuery("is-in", ["sector", sector]),
+            yf.EquityQuery("is-in", ["region", region.lower()]),
+        ],
+    )
+    response = yf.screen(query, sortField="intradaymarketcap")
+    return response
 
 @retry_on_rate_limit(max_retries=3, base_delay=5.0, success_delay=1.5)
 def get_calendar(ticker: str) -> dict | None:

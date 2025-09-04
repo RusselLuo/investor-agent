@@ -134,7 +134,7 @@ def get_ticker_data(
     - recommendations: Latest analyst recommendations (buy/sell/hold ratings)
     - upgrades_downgrades: Recent analyst rating changes
     """
-    info = yfinance_utils.get_tickers_info(ticker)
+    info = yfinance_utils.get_tickers_info([ticker])
     if not info:
         raise ValueError(f"No information available for {ticker}")
 
@@ -167,7 +167,14 @@ def get_ticker_data(
     return data
 
 @mcp.tool()
-def get_multiple_ticker_raw(tickers: list[str]):
+def get_same_sector_tickers(ticker: str):
+    """
+    get the tickers that from the same sector and same region. This can be used by LLM for stock comparison
+    """
+    return yfinance_utils.get_same_sector_tickers(ticker)
+
+@mcp.tool()
+def get_multiple_tickers_info(tickers: list[str]):
     """
     get up to 5 tickers in one go. Prefer to use this tool when query for multiple tickers
     Returns:
