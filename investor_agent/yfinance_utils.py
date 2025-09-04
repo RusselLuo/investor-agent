@@ -49,8 +49,15 @@ def retry_on_rate_limit(max_retries: int = 3, base_delay: float = 5.0, success_d
     return decorator
 
 @retry_on_rate_limit(max_retries=3, base_delay=5.0, success_delay=1.5)
-def get_ticker_info(ticker: str) -> dict | None:
-    return yf.Ticker(ticker).get_info()
+def get_tickers_info(ticker: str | list[str]) -> dict | None:
+    if isinstance(ticker, str):
+        return yf.Ticker(ticker).get_info()
+    elif isinstance(ticker, list):
+        ret = {}
+        for t in ticker:
+            info = yf.Ticker(t).get_info()
+            ret[t] = info
+        return ret
 
 @retry_on_rate_limit(max_retries=3, base_delay=5.0, success_delay=1.5)
 def get_calendar(ticker: str) -> dict | None:

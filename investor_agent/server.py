@@ -134,7 +134,7 @@ def get_ticker_data(
     - recommendations: Latest analyst recommendations (buy/sell/hold ratings)
     - upgrades_downgrades: Recent analyst rating changes
     """
-    info = yfinance_utils.get_ticker_info(ticker)
+    info = yfinance_utils.get_tickers_info(ticker)
     if not info:
         raise ValueError(f"No information available for {ticker}")
 
@@ -165,6 +165,25 @@ def get_ticker_data(
         data["upgrades_downgrades"] = upgrades.to_dict('split')
 
     return data
+
+@mcp.tool()
+def get_multiple_ticker_raw(tickers: list[str]):
+    """
+    get up to 5 tickers in one go. Prefer to use this tool when query for multiple tickers
+    Returns:
+    """
+    if len(tickers) > 5:
+        raise ValueError(f"This api can't query for more than 5 tickers")
+    def filter_func(info):
+        essential_fields = {
+            'symbol', 'longName', 'currentPrice', 'marketCap', 'volume', 'trailingPE',
+            'forwardPE', 'dividendYield', 'beta', 'eps', 'totalRevenue', 'totalDebt',
+            'profitMargins', 'operatingMargins', 'returnOnEquity', 'returnOnAssets',
+            'revenueGrowth', 'earningsGrowth', 'bookValue', 'priceToBook',
+            'enterpriseValue', 'pegRatio', 'trailingEps', 'forwardEps'
+        }
+        return {k: v for k, v in info.items() if k in essential_fields}
+    return {name: filter_func(val) for name, val in yfinance_utils.get_tickers_info(tickers).items()}
 
 @mcp.tool()
 def get_options(
