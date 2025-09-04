@@ -1,5 +1,10 @@
 FROM astral/uv:0.8.15-python3.12-trixie-slim
 
+# Get NodeJS
+COPY --from=node:20-trixie-slim /usr/local/bin /usr/local/bin
+# Get npm
+COPY --from=node:20-trixie-slim /usr/local/lib/node_modules /usr/local/lib/node_modules
+
 RUN apt-get update && apt-get install -y \
     bash \
     git \
@@ -16,9 +21,9 @@ COPY . .
 RUN uv sync --locked
 
 # 对于可选依赖，可以使用以下命令：
-RUN uv pip install --system "investor-agent[ta,playwright]"
-RUN playwright install-deps chromium
-RUN playwright install chromium
+# RUN uv pip install --system "investor-agent[ta,playwright]"
+# RUN playwright install-deps chromium
+# RUN playwright install chromium
 
 # 暴露端口
 EXPOSE 80
