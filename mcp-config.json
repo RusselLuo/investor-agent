@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "investor-agent": {
+      "command": "uv",
+      "args": ["run", "investor-agent", "--local-timezone=America/Hong_Kong"]
+    }
+  }
+}

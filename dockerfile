@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
 
 # 创建工作目录
 WORKDIR /app
+VOLUME /app
 
 # 复制项目文件
 COPY . .
@@ -23,4 +24,4 @@ RUN playwright install chromium
 EXPOSE 80
 
 # 启动命令
-CMD uvx mcpo --port 80 -- uv run investor-agent --local-timezone=America/Hong_Kong
+CMD uvx mcpo --port 80 --config mcp-config.json
